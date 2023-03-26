@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src/",
     "target": "ES5",
     "module": "ESNext",
     "moduleResolution": "node",
@@ -11,7 +12,8 @@
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": { "components": ["components"], "images": ["images"] }
   },
-  "include": ["src/**/*", "src/index.tsx", "src/App.tsx"]
+  "include": ["src", "./custom.d.ts"]
 }
