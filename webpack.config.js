@@ -26,6 +26,14 @@ module.exports = {
   resolve: {
     modules: [__dirname, "src", "node_modules"],
     extensions: ["*", ".js", ".jsx", ".tsx", ".ts"],
+    alias: {
+      "components": path.resolve(__dirname, "src/components"),
+      "config": path.resolve(__dirname, "src/config"),
+      "hooks": path.resolve(__dirname, "src/hooks"),
+      "images": path.resolve(__dirname, "src/images"),
+      "pages": path.resolve(__dirname, "src/pages"),
+      "utils": path.resolve(__dirname, "src/utils"),
+    },
   },
   module: {
     rules: [
@@ -49,4 +57,5 @@ module.exports = {
       },
     ],
   },
+
 };

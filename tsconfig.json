@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
     "target": "ES5",
     "module": "ESNext",
     "moduleResolution": "node",
@@ -11,7 +12,15 @@
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "components": ["components"],
+      "config": ["config"],
+      "hooks": ["hooks"],
+      "images": ["images"],
+      "pages": ["pages"],
+      "utils": ["utils"],
+    }
   },
-  "include": ["src/**/*", "src/index.tsx", "src/App.tsx"]
+  "include": ["src/**/*", "src/index.tsx", "src/components/App/App.tsx"]
 }
