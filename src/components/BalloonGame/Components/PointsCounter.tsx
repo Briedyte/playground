@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import {
-  ColorPalette,
-  FontFamily,
-  FontSize,
-  Spacing,
-  zIndex,
-} from "config/style";
+import { ColorPalette, FontFamily, FontSize, Spacing } from "config/style";
 
 interface TimerProps {
   isActive: boolean;
@@ -27,6 +21,7 @@ const Container = styled.div`
   border: 2px solid ${ColorPalette.black};
   min-width: 100px;
   text-align: center;
+  background: ${ColorPalette.whiteTransparent};
 `;
 
 const PointsCounter = ({ isActive, reset, onGameEnd }: TimerProps) => {

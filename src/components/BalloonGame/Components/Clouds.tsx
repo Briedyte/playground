@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import CloudImg from "images/balloonGame/cloud.svg";
-import { zIndex } from "config/style";
+import { MediaQuery, zIndex } from "config/style";
 
 interface CloudsProps {
   countOfClouds: number;
@@ -23,13 +23,13 @@ const CloudsContainer = styled.div`
   pointer-events: none;
 `;
 
-const Cloud = styled.img<{ animationDuration: number; height: string }>`
+const Cloud = styled.img<{ animationDuration: number; countOfClouds: number }>`
   @keyframes sideToSide {
     0% {
       left: -20%;
       opacity: 0;
     }
-    10% {
+    4% {
       opacity: 1;
     }
     100% {
@@ -41,9 +41,14 @@ const Cloud = styled.img<{ animationDuration: number; height: string }>`
   pointer-events: fill;
   z-index: ${zIndex.clouds};
 
-  ${({ height, animationDuration }) => `
+  ${({ countOfClouds, animationDuration }) => `
   animation: sideToSide ${animationDuration}s linear forwards infinite;
-  height: ${height}
+  height: ${100 / countOfClouds}%;
+
+  ${MediaQuery.s}{
+    height: ${60 / countOfClouds}%;
+    }
+
   `}
 
   ::selection {
@@ -68,7 +73,7 @@ const Clouds = React.memo(({ countOfClouds }: CloudsProps) => {
             alt={"Cloud"}
             animationDuration={randomCloudAnimationDurations}
             key={cloudIndex}
-            height={`${100 / countOfClouds}%`}
+            countOfClouds={countOfClouds}
           />
         );
       })}

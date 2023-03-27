@@ -92,6 +92,13 @@ const CenteredContainer = styled.div`
   align-items: center;
   flex-direction: column;
   z-index: ${zIndex.aboveClouds};
+  background: ${ColorPalette.whiteTransparent};
+  padding: 60px;
+  border: 2px solid ${ColorPalette.black};
+
+  ${MediaQuery.s} {
+    margin: 20% 15px 0;
+  }
 `;
 
 const Typography = styled.p`
