@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./src/",
-    "target": "ES5",
+    "target": "ES2015",
     "module": "ESNext",
     "moduleResolution": "node",
     "lib": ["DOM", "ESNext"],
@@ -13,7 +13,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "paths": { "components": ["components"], "images": ["images"] }
+    "paths": {
+      "components": ["components"],
+      "images": ["images"],
+      "hooks": ["hooks"]
+    }
   },
   "include": ["src", "./custom.d.ts"]
 }

@@ -1,8 +1,10 @@
-const App = () => {
-  return (
-    <div>
-      <h1>Wazzup!!</h1>
-    </div>
-  );
-};
+import BalloonGame from "components/BalloonGame/BaloonGame";
+import GlobalStyle from "config/globalStyle";
+
+const App = () => (
+  <>
+    <BalloonGame />
+    <GlobalStyle />
+  </>
+);
 export default App;
