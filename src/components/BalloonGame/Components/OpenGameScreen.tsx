@@ -148,7 +148,6 @@ const OpenGameScreen = ({
   );
   const [score, setScore] = useState<null | number>(null);
   const balloonRef = useRef<HTMLImageElement>(null);
-  const gameContainerRef = useRef<HTMLElement>(null);
   const windowDimensions = useWindowDimensions();
 
   const balloonObserver = new IntersectionObserver((entries) => {
@@ -158,11 +157,11 @@ const OpenGameScreen = ({
       setGameStage(GameStage.gameOver);
     }
   },{
-    root: gameContainerRef.current,
+    root: null,
     });
 
   useEffect(() => {
-    if (balloonRef.current && gameStage == GameStage.started) {
+    if (balloonRef.current && gameStage === GameStage.started) {
       balloonObserver.observe(balloonRef.current);
     }
 
@@ -176,7 +175,7 @@ const OpenGameScreen = ({
   };
 
   return (
-    <GameContainer ref={gameContainerRef} >
+    <GameContainer >
       <CloseButton
         onClick={() => {
           onClose();
