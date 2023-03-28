@@ -157,7 +157,7 @@ const OpenGameScreen = ({
       setGameStage(GameStage.gameOver);
     }
   },{
-    root: document.body,
+    threshold: 0.1,
     });
 
   useEffect(() => {
