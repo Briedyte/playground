@@ -21,7 +21,7 @@ interface OpenGameScreenProps {
   setGameStage: (stage: GameStage) => void;
 }
 
-const GameWrapper = styled.section`
+const GameContainer = styled.section`
   @keyframes backgroundAppear {
     0% {
       opacity: 0;
@@ -148,6 +148,7 @@ const OpenGameScreen = ({
   );
   const [score, setScore] = useState<null | number>(null);
   const balloonRef = useRef<HTMLImageElement>(null);
+  const gameContainerRef = useRef<HTMLElement>(null);
   const windowDimensions = useWindowDimensions();
 
   const balloonObserver = new IntersectionObserver((entries) => {
@@ -156,7 +157,9 @@ const OpenGameScreen = ({
     if (!balloon.isIntersecting) {
       setGameStage(GameStage.gameOver);
     }
-  });
+  },{
+    root: gameContainerRef.current,
+    });
 
   useEffect(() => {
     if (balloonRef.current && gameStage == GameStage.started) {
@@ -173,7 +176,7 @@ const OpenGameScreen = ({
   };
 
   return (
-    <GameWrapper>
+    <GameContainer ref={gameContainerRef} >
       <CloseButton
         onClick={() => {
           onClose();
@@ -226,7 +229,7 @@ const OpenGameScreen = ({
           onGameEnd={(score: number) => setScore(score)}
         />
       </CounterWrapper>
-    </GameWrapper>
+    </GameContainer>
   );
 };
 
