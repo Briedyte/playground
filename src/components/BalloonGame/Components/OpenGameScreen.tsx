@@ -172,8 +172,6 @@ const OpenGameScreen = ({
       : `${-(Math.random() * 2000) - screenWidthOrHeight}px`;
   };
 
-  console.log("READY", gameStage);
-
   return (
     <GameWrapper>
       <CloseButton
