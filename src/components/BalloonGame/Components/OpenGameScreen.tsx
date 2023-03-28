@@ -157,7 +157,7 @@ const OpenGameScreen = ({
       setGameStage(GameStage.gameOver);
     }
   },{
-    root: null,
+    root: document.body,
     });
 
   useEffect(() => {
