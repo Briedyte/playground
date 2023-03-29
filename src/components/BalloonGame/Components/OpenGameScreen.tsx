@@ -72,6 +72,7 @@ const Balloon = styled.img<{
   }
 
   ${balloonBaseStyle};
+  background: blue;
   position: absolute;
   left: 50%;
   transform: translateX(-50%) translateY(0);
@@ -148,19 +149,23 @@ const OpenGameScreen = ({
   );
   const [score, setScore] = useState<null | number>(null);
   const balloonRef = useRef<HTMLImageElement>(null);
+  const balloonObserver = useRef(null);
   const windowDimensions = useWindowDimensions();
 
-  const balloonObserver = new IntersectionObserver((entries) => {
-    const balloon = entries[0];
 
-    if (!balloon.isIntersecting) {
-      setGameStage(GameStage.gameOver);
-    }
-  },{
-    threshold: 0.1,
-    });
 
   useEffect(() => {
+    const balloonObserver = new IntersectionObserver((entries) => {
+      const balloon = entries[0];
+  
+      if (!balloon.isIntersecting) {
+        setGameStage(GameStage.gameOver);
+      }
+    },{
+      threshold: 0.1,
+      });
+
+
     if (balloonRef.current && gameStage === GameStage.started) {
       balloonObserver.observe(balloonRef.current);
     }
@@ -195,7 +200,6 @@ const OpenGameScreen = ({
           <Typography>Aaaand it's gone! You scored {score} points!</Typography>
           <Button
             onClick={() => {
-              balloonObserver.disconnect();
               setBalloonPosition(defaultBalloonPosition);
               setGameStage(GameStage.ready);
             }}
