@@ -72,7 +72,7 @@ const Balloon = styled.img<{
   }
 
   ${balloonBaseStyle};
-  background: blue;
+  background: green;
   position: absolute;
   left: 50%;
   transform: translateX(-50%) translateY(0);
@@ -149,7 +149,6 @@ const OpenGameScreen = ({
   );
   const [score, setScore] = useState<null | number>(null);
   const balloonRef = useRef<HTMLImageElement>(null);
-  const balloonObserver = useRef(null);
   const windowDimensions = useWindowDimensions();
 
 
@@ -163,6 +162,7 @@ const OpenGameScreen = ({
       }
     },{
       threshold: 0.1,
+      root: document
       });
 
 
