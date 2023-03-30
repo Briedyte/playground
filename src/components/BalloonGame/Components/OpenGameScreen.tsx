@@ -51,39 +51,40 @@ const CloseButton = styled.button`
   margin-left: auto;
   z-index: ${zIndex.aboveClouds};
 `;
-
-const Balloon = styled.img<{
+const BalloonContainer = styled.div<{
   position: { x: string; y: string };
   gameStarted: boolean;
 }>`
-  @keyframes flyFromBottom {
-    0% {
-      opacity: 0;
-      bottom: 0;
-    }
-    40% {
-      opacity: 0;
-      bottom: 0;
-    }
-    100% {
-      opacity: 1;
-      bottom: 30%;
-    }
+@keyframes flyFromBottom {
+  0% {
+    opacity: 0;
+    bottom: 0;
   }
+  40% {
+    opacity: 0;
+    bottom: 0;
+  }
+  100% {
+    opacity: 1;
+    bottom: 30%;
+  }
+}
+background: yellow;
+position: absolute;
+left: 50%;
+animation: flyFromBottom 2s forwards linear;
+transition: transform 16s linear;
 
+${({ position, gameStarted }) => `
+transform: translateX(${position.x}) translateY(${position.y});
+z-index: ${gameStarted ? zIndex.negative : zIndex.aboveClouds};
+transition: ${gameStarted ? "transform 16s linear" : "none"};
+`}
+`
+
+const Balloon = styled.img`
   ${balloonBaseStyle};
-  background: green;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%) translateY(0);
-  animation: flyFromBottom 2s forwards linear;
-  transition: transform 16s linear;
-
-  ${({ position, gameStarted }) => `
-    transform: translateX(${position.x}) translateY(${position.y});
-    z-index: ${gameStarted ? zIndex.negative : zIndex.aboveClouds};
-    transition: ${gameStarted ? "transform 16s linear" : "none"};
-  `}
+  cursor: pointer;
 `;
 
 const CenteredContainer = styled.div`
@@ -161,8 +162,9 @@ const OpenGameScreen = ({
         setGameStage(GameStage.gameOver);
       }
     },{
-      threshold: 0.1,
-      root: document
+      threshold: 0.2,
+      root: document,
+      rootMargin: '3px'
       });
 
 
@@ -209,22 +211,23 @@ const OpenGameScreen = ({
         </CenteredContainer>
       )}
       <Clouds countOfClouds={5} />
-      <Balloon
-        src={BalloonImg}
-        gameStarted={gameStage === GameStage.started}
+      <BalloonContainer  gameStarted={gameStage === GameStage.started}
         position={{ x: balloonPosition.x, y: balloonPosition.y }}
+        ref={balloonRef}>
+      <Balloon
+        src={BalloonImg} alt="Balloon"
         onClick={() => {
+          if (gameStage !== GameStage.started) {
+            setGameStage(GameStage.started);
+          }
           setBalloonPosition({
             x: getRandomOffscreenPosition(windowDimensions.width),
             y: getRandomOffscreenPosition(windowDimensions.height),
           });
-
-          if (gameStage !== GameStage.started) {
-            setGameStage(GameStage.started);
-          }
         }}
-        ref={balloonRef}
+
       />
+      </BalloonContainer>
       <CounterWrapper>
         <PointsCounter
           isActive={gameStage === GameStage.started}
