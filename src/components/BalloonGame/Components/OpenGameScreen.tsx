@@ -14,6 +14,7 @@ import useWindowDimensions from "hooks/useWindowDimensons";
 import { GameStage } from "components/BalloonGame/BaloonGame";
 import { Button } from "components/Button/Button";
 import { Clouds, PointsCounter } from "components/BalloonGame/index";
+import { useInView } from "react-intersection-observer";
 
 interface OpenGameScreenProps {
   onClose: () => void;
@@ -69,7 +70,7 @@ const BalloonContainer = styled.div<{
     bottom: 30%;
   }
 }
-background: yellow;
+background: red;
 position: absolute;
 left: 50%;
 animation: flyFromBottom 2s forwards linear;
@@ -149,31 +150,18 @@ const OpenGameScreen = ({
     defaultBalloonPosition
   );
   const [score, setScore] = useState<null | number>(null);
-  const balloonRef = useRef<HTMLImageElement>(null);
+  const [ balloonRef, inView, entry ] = useInView();
+  // const balloonRef = useRef<HTMLImageElement>(null);
   const windowDimensions = useWindowDimensions();
 
 
 
   useEffect(() => {
-    const balloonObserver = new IntersectionObserver((entries) => {
-      const balloon = entries[0];
-  
-      if (!balloon.isIntersecting) {
-        setGameStage(GameStage.gameOver);
-      }
-    },{
-      threshold: 0.2,
-      root: document,
-      rootMargin: '3px'
-      });
-
-
-    if (balloonRef.current && gameStage === GameStage.started) {
-      balloonObserver.observe(balloonRef.current);
+    if(!inView){
+      setGameStage(GameStage.gameOver)
     }
 
-    return () => balloonObserver.disconnect();
-  }, [balloonRef, gameStage]);
+  }, [balloonRef, inView]);
 
   const getRandomOffscreenPosition = (screenWidthOrHeight: number) => {
     return Math.random() > 0.5
