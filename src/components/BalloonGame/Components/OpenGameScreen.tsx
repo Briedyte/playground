@@ -3,7 +3,6 @@ import styled from "styled-components";
 import {
   balloonBaseStyle,
   ColorPalette,
-  FontSize,
   MediaQuery,
   Spacing,
   zIndex,
@@ -52,7 +51,7 @@ const CloseButton = styled.button`
   z-index: ${zIndex.aboveClouds};
 `;
 
-const Balloon = styled.img<{
+const BallononWrapper = styled.div<{
   position: { x: string; y: string };
   gameStarted: boolean;
 }>`
@@ -71,7 +70,6 @@ const Balloon = styled.img<{
     }
   }
 
-  ${balloonBaseStyle};
   position: absolute;
   left: 50%;
   transform: translateX(-50%) translateY(0);
@@ -83,6 +81,29 @@ const Balloon = styled.img<{
     z-index: ${gameStarted ? zIndex.negative : zIndex.aboveClouds};
     transition: ${gameStarted ? "transform 16s linear" : "none"};
   `}
+`;
+
+const Balloon = styled.img<{
+  gameStarted: boolean;
+}>`
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-30deg);
+    }
+    75% {
+      transform: rotate(30deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+  ${balloonBaseStyle};
+  animation: ${({ gameStarted }) =>
+    gameStarted ? "rotate 4s linear forwards infinite" : "none"};
+  transition: transform 16s linear;
 `;
 
 const CenteredContainer = styled.div`
@@ -100,8 +121,6 @@ const CenteredContainer = styled.div`
     margin: 20% 15px 0;
   }
 `;
-
-
 
 const CounterWrapper = styled.div`
   @keyframes appearFromBottom {
@@ -142,15 +161,18 @@ const OpenGameScreen = ({
   const balloonRef = useRef<HTMLImageElement>(null);
   const windowDimensions = useWindowDimensions();
 
-  const balloonObserver = new IntersectionObserver((entries) => {
-    const balloon = entries[0];
+  const balloonObserver = new IntersectionObserver(
+    (entries) => {
+      const balloon = entries[0];
 
-    if (!balloon.isIntersecting) {
-      setGameStage(GameStage.gameOver);
+      if (!balloon.isIntersecting) {
+        setGameStage(GameStage.gameOver);
+      }
+    },
+    {
+      threshold: 0.1,
     }
-  },{
-    threshold: 0.1,
-    });
+  );
 
   useEffect(() => {
     if (balloonRef.current && gameStage === GameStage.started) {
@@ -167,7 +189,7 @@ const OpenGameScreen = ({
   };
 
   return (
-    <GameContainer >
+    <GameContainer>
       <CloseButton
         onClick={() => {
           onClose();
@@ -178,12 +200,11 @@ const OpenGameScreen = ({
       {gameStage === GameStage.ready && (
         <CenteredContainer>
           <Paragraph text="Click on the balloon to bounce it and try not to loose it offscreen!" />
-
         </CenteredContainer>
       )}
       {gameStage === GameStage.gameOver && (
         <CenteredContainer>
-          <Paragraph text={`Aaaand it's gone! You scored ${score} points!`}/>
+          <Paragraph text={`Aaaand it's gone! You scored ${score} points!`} />
           <Button
             onClick={() => {
               balloonObserver.disconnect();
@@ -196,8 +217,7 @@ const OpenGameScreen = ({
         </CenteredContainer>
       )}
       <Clouds countOfClouds={5} />
-      <Balloon
-        src={BalloonImg}
+      <BallononWrapper
         gameStarted={gameStage === GameStage.started}
         position={{ x: balloonPosition.x, y: balloonPosition.y }}
         onClick={() => {
@@ -211,7 +231,12 @@ const OpenGameScreen = ({
           }
         }}
         ref={balloonRef}
-      />
+      >
+        <Balloon
+          gameStarted={gameStage === GameStage.started}
+          src={BalloonImg}
+        />
+      </BallononWrapper>
       <CounterWrapper>
         <PointsCounter
           isActive={gameStage === GameStage.started}
