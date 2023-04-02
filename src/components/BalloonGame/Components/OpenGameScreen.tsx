@@ -102,7 +102,7 @@ const Balloon = styled.img<{
   }
   ${balloonBaseStyle};
   animation: ${({ gameStarted }) =>
-    gameStarted ? "rotate 4s linear forwards infinite" : "none"};
+    gameStarted ? "rotate 5s linear forwards infinite" : "none"};
   transition: transform 16s linear;
 `;
 
