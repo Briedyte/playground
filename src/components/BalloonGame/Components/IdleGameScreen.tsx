@@ -2,7 +2,13 @@ import styled from "styled-components";
 import Balloon from "images/balloonGame/balloon.png";
 import ArrowImg from "images/balloonGame/arrow.svg";
 
-import { FontSize, Spacing, balloonBaseStyle, zIndex } from "config/style";
+import {
+  ColorPalette,
+  FontSize,
+  Spacing,
+  balloonBaseStyle,
+  zIndex,
+} from "config/style";
 import Paragraph from "./Paragraph";
 
 interface IdleGameScreenProps {
@@ -71,6 +77,10 @@ const Arrow = styled.img<{ isVisible: boolean }>`
       : "goDown 0.2s linear forwards"};
 `;
 
+const Title = styled.h3`
+  font-size: ${FontSize[40]};
+`;
+
 const OpenTheGameText = styled.h2`
   font-size: ${FontSize[30]};
   position: absolute;
@@ -93,7 +103,7 @@ const IdleGameScreen = ({
 }: IdleGameScreenProps) => {
   return (
     <MainContainer>
-      <Paragraph text="All work and no play makes Jack a dull boy." />
+      <Title>All work and no play makes Jack a dull boy.</Title>
 
       <OpenTheGameItems>
         <Arrow
