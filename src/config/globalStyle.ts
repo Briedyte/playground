@@ -38,7 +38,6 @@ p {
 h1, h2, h3, h4, h5, h6 {
     font-family: ${FontFamily.paragraph};
     font-weight: ${FontWeight.regular};
-    line-height: 1.7rem;
 }
 a {
     text-decoration: none;

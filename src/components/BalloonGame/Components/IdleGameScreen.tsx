@@ -79,6 +79,8 @@ const Arrow = styled.img<{ isVisible: boolean }>`
 
 const Title = styled.h3`
   font-size: ${FontSize[40]};
+  text-align: center;
+  padding: 5%;
 `;
 
 const OpenTheGameText = styled.h2`
@@ -91,6 +93,7 @@ const OpenTheGameText = styled.h2`
   pointer-events: none;
   width: 100px;
   left: 50%;
+  line-height: 1.7rem;
 `;
 
 const BalloonImg = styled.img`
