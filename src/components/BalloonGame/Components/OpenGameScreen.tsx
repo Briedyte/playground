@@ -66,14 +66,14 @@ const BallononWrapper = styled.div<{
     }
     100% {
       opacity: 1;
-      bottom: 30%;
+      bottom: 20%;
     }
   }
 
   position: absolute;
   left: 50%;
   transform: translateX(-50%) translateY(0);
-  animation: flyFromBottom 2s forwards linear;
+  animation: flyFromBottom 1.5s forwards linear;
   transition: transform 16s linear;
 
   ${({ position, gameStarted }) => `
@@ -117,7 +117,7 @@ const CenteredContainer = styled.div`
   flex-direction: column;
   z-index: ${zIndex.aboveClouds};
   background: ${ColorPalette.whiteTransparent};
-  padding: 60px;
+  padding: 60px 10px;
   border: 2px solid ${ColorPalette.black};
 
   ${MediaQuery.s} {
