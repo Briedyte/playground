@@ -94,8 +94,8 @@ export const BorderRadius = {
 } as const;
 
 export const FontFamily = {
-  nunito: "'Nunito', sans-serif",
-  teko: "'Teko', sans-serif",
+  header: "'Nunito', sans-serif",
+  paragraph: "'Teko', sans-serif",
 } as const;
 
 export const Breakpoint = {
@@ -113,18 +113,14 @@ export const MediaQuery = {
   xl: `@media(min-width: ${Breakpoint.l}px)`,
 };
 
-export const headerHeight = "140px";
-export const sidenavWidth = "300px";
-
-export const formBaseStyle = `
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: ${Spacing[11]};
-    align-items: center;
-  `;
-
 export const balloonBaseStyle = `
     cursor: pointer;
     height: 150px;
   `;
+
+export const centeredItem = `
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+`;

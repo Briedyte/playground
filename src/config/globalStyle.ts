@@ -29,16 +29,16 @@ body {
 }
 p, label, input, span, li, a, button {
     color: ${ColorPalette.black};
-    font-family: ${FontFamily.nunito};
+    font-family: ${FontFamily.header};
     font-weight: ${FontWeight.regular};
 }
 p {
     margin: ${Spacing[8]} 0;
 }
 h1, h2, h3, h4, h5, h6 {
-    font-family: ${FontFamily.teko};
+    font-family: ${FontFamily.paragraph};
     font-weight: ${FontWeight.regular};
-    line-height: 2.6rem;
+    line-height: 1.7rem;
 }
 a {
     text-decoration: none;

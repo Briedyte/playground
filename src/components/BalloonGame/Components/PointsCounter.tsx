@@ -15,7 +15,7 @@ const Container = styled.div`
   padding: ${Spacing[20]};
   color: ${ColorPalette.black};
   font-size: ${FontSize[40]};
-  font-family: ${FontFamily.teko};
+  font-family: ${FontFamily.paragraph};
   position: relative;
   transition: all 0.5s linear;
   border: 2px solid ${ColorPalette.black};

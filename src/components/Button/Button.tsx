@@ -20,7 +20,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const ButtonStyled = styled.button<{ variant: ButtonVariant }>`
-  font: ${FontFamily.nunito};
+  font: ${FontFamily.header};
   font-size: ${FontSize[18]};
   cursor: pointer;
   background: none;
