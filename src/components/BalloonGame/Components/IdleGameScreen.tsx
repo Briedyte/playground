@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import Balloon from "images/balloonGame/balloon.png";
+import ArrowImg from "images/balloonGame/arrow.svg";
+
 import {
   FontSize,
   Spacing,
@@ -18,7 +20,12 @@ const MainContainer = styled.div`
   ${centeredItems};
 `;
 
-const OpenTheGameItems = styled.div<{ isAnimationInitiated: boolean }>`
+const OpenTheGameItems = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const BalloonWrapper = styled.div<{ isAnimationInitiated: boolean }>`
   @keyframes upAndGone {
     0% {
       bottom: 0;
@@ -28,7 +35,7 @@ const OpenTheGameItems = styled.div<{ isAnimationInitiated: boolean }>`
       opacity: 1;
     }
     100% {
-      bottom: 100%;
+      bottom: 200%;
       display: none;
       opacity: 0;
     }
@@ -37,6 +44,36 @@ const OpenTheGameItems = styled.div<{ isAnimationInitiated: boolean }>`
   animation: ${({ isAnimationInitiated }) =>
     `${isAnimationInitiated ? "upAndGone 2.5s ease-in forwards" : "none"}`};
   position: relative;
+`;
+
+const Arrow = styled.img<{ isVisible: boolean }>`
+  @keyframes bounce {
+    0% {
+      bottom: 0;
+    }
+    50% {
+      bottom: 30px;
+    }
+    100% {
+      bottom: 0;
+    }
+  }
+  @keyframes goDown {
+    0% {
+      top: 0;
+      opacity: 1;
+    }
+    100% {
+      top: 200px;
+      opacity: 0;
+    }
+  }
+  height: 30px;
+  position: relative;
+  animation: ${({ isVisible }) =>
+    isVisible
+      ? "bounce 1s linear forwards infinite"
+      : "goDown 0.2s linear forwards"};
 `;
 
 const OpenTheGameText = styled.h2`
@@ -61,12 +98,21 @@ const IdleGameScreen = ({
     <MainContainer>
       <Paragraph text="All work and no play makes Jack a dull boy." />
 
-      <OpenTheGameItems
-        onClick={() => onStartClick(true)}
-        isAnimationInitiated={isGameScreenOpen}
-      >
-        {!isGameScreenOpen && <OpenTheGameText>Open the game</OpenTheGameText>}
-        <BalloonImg src={Balloon} alt="Balloon" />
+      <OpenTheGameItems>
+        <Arrow
+          isVisible={!isGameScreenOpen}
+          src={ArrowImg}
+          alt={"Arrow pointing down"}
+        />
+        <BalloonWrapper
+          onClick={() => onStartClick(true)}
+          isAnimationInitiated={isGameScreenOpen}
+        >
+          {!isGameScreenOpen && (
+            <OpenTheGameText>Open the game</OpenTheGameText>
+          )}
+          <BalloonImg src={Balloon} alt="Balloon" />
+        </BalloonWrapper>
       </OpenTheGameItems>
     </MainContainer>
   );
