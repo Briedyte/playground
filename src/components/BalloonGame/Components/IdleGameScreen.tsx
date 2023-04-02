@@ -2,13 +2,7 @@ import styled from "styled-components";
 import Balloon from "images/balloonGame/balloon.png";
 import ArrowImg from "images/balloonGame/arrow.svg";
 
-import {
-  FontSize,
-  Spacing,
-  balloonBaseStyle,
-  centeredItem as centeredItems,
-  zIndex,
-} from "config/style";
+import { FontSize, Spacing, balloonBaseStyle, zIndex } from "config/style";
 import Paragraph from "./Paragraph";
 
 interface IdleGameScreenProps {
@@ -17,7 +11,10 @@ interface IdleGameScreenProps {
 }
 
 const MainContainer = styled.div`
-  ${centeredItems};
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
 `;
 
 const OpenTheGameItems = styled.div`

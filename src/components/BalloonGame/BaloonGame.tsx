@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { OpenGameScreen, IdleGameScreen } from "components/BalloonGame/index";
+import Github from "images/github_logo.png";
+import styled from "styled-components";
 
 export enum GameStage {
   idle = "idle",
@@ -8,12 +10,26 @@ export enum GameStage {
   gameOver = "gameOver",
 }
 
+const GameWrapper = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const GithubLogo = styled.img`
+  height: 4rem;
+  margin: 1rem;
+`;
+
 function BalloonGame() {
   const [gameStage, setGameStage] = useState(GameStage.idle);
   const isGameOpen = gameStage !== GameStage.idle;
 
   return (
-    <>
+    <GameWrapper>
+      <a href="https://github.com/Briedyte/playground" target="_blank">
+        <GithubLogo src={Github} alt="Link to Github code" />
+      </a>
       <IdleGameScreen
         onStartClick={() => setGameStage(GameStage.ready)}
         isGameScreenOpen={isGameOpen}
@@ -25,7 +41,7 @@ function BalloonGame() {
           setGameStage={(stage: GameStage) => setGameStage(stage)}
         />
       )}
-    </>
+    </GameWrapper>
   );
 }
 
