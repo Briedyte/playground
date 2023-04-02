@@ -1,6 +1,6 @@
 <h1 align="center">Balloon game</h1>
 
-<p align="center">[You can play it here >>](https://briedyte.github.io/playground/) </p>
+[You can play it here ▷ ](https://briedyte.github.io/playground/)
 
 ---
 
