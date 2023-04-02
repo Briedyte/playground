@@ -29,14 +29,12 @@ const BalloonWrapper = styled.div<{ isAnimationInitiated: boolean }>`
   @keyframes upAndGone {
     0% {
       bottom: 0;
-      display: block;
     }
     75% {
       opacity: 1;
     }
     100% {
-      bottom: 200%;
-      display: none;
+      bottom: 500px;
       opacity: 0;
     }
   }
@@ -79,11 +77,13 @@ const Arrow = styled.img<{ isVisible: boolean }>`
 const OpenTheGameText = styled.h2`
   font-size: ${FontSize[30]};
   position: absolute;
-  top: ${Spacing[40]};
-  transform: rotate(-16deg);
+  top: ${Spacing[32]};
+  transform: rotate(-16deg) translateX(-50%);
   text-align: center;
   z-index: ${zIndex.positive};
   pointer-events: none;
+  width: 100px;
+  left: 50%;
 `;
 
 const BalloonImg = styled.img`
