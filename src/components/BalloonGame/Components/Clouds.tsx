@@ -46,7 +46,7 @@ const Cloud = styled.img<{ animationDuration: number; countOfClouds: number }>`
   height: ${100 / countOfClouds}%;
 
   ${MediaQuery.s}{
-    height: ${60 / countOfClouds}%;
+    height: ${80 / countOfClouds}%;
     }
 
   `}

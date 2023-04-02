@@ -101,9 +101,12 @@ const Balloon = styled.img<{
     }
   }
   ${balloonBaseStyle};
-  animation: ${({ gameStarted }) =>
-    gameStarted ? "rotate 5s linear forwards infinite" : "none"};
+
+  ${({ gameStarted }) => `
+  animation: ${gameStarted ? "rotate 5s linear forwards infinite" : "none"};
+  transform: ${!gameStarted && "rotate(0)"}
   transition: transform 16s linear;
+`}
 `;
 
 const CenteredContainer = styled.div`
