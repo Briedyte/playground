@@ -13,7 +13,7 @@ import BalloonImg from "images/balloonGame/balloon.png";
 import useWindowDimensions from "hooks/useWindowDimensons";
 import { GameStage } from "components/BalloonGame/BaloonGame";
 import { Button } from "components/Button/Button";
-import { Clouds, PointsCounter } from "components/BalloonGame/index";
+import { Clouds, PointsCounter, Paragraph } from "components/BalloonGame/index";
 
 interface OpenGameScreenProps {
   onClose: () => void;
@@ -101,15 +101,7 @@ const CenteredContainer = styled.div`
   }
 `;
 
-const Typography = styled.p`
-  text-align: center;
-  font-size: ${FontSize[40]};
-  pointer-events: none;
 
-  ${MediaQuery.s} {
-    font-size: 30px;
-  }
-`;
 
 const CounterWrapper = styled.div`
   @keyframes appearFromBottom {
@@ -185,14 +177,13 @@ const OpenGameScreen = ({
       </CloseButton>
       {gameStage === GameStage.ready && (
         <CenteredContainer>
-          <Typography>
-            Click on the balloon to bounce it and try not to loose it offscreen!
-          </Typography>
+          <Paragraph text="Click on the balloon to bounce it and try not to loose it offscreen!" />
+
         </CenteredContainer>
       )}
       {gameStage === GameStage.gameOver && (
         <CenteredContainer>
-          <Typography>Aaaand it's gone! You scored {score} points!</Typography>
+          <Paragraph text={`Aaaand it's gone! You scored ${score} points!`}/>
           <Button
             onClick={() => {
               balloonObserver.disconnect();
