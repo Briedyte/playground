@@ -117,10 +117,3 @@ export const balloonBaseStyle = `
     cursor: pointer;
     height: 150px;
   `;
-
-export const centeredItem = `
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: center;
-`;
