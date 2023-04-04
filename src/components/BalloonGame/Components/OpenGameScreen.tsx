@@ -12,7 +12,9 @@ import BalloonImg from "images/balloonGame/balloon.png";
 import useWindowDimensions from "hooks/useWindowDimensons";
 import { GameStage } from "components/BalloonGame/BaloonGame";
 import { Clouds, PointsCounter, Paragraph } from "components/BalloonGame/index";
-import Button from "components/Button";
+import Button from "components/buttons";
+import HighScore from "./HighScore";
+import { getFromLocalStorage, LocalStorage, setToLocalStorage } from "utils/localStorage";
 
 interface OpenGameScreenProps {
   onClose: () => void;
@@ -185,6 +187,15 @@ const OpenGameScreen = ({
     return () => balloonObserver.disconnect();
   }, [balloonRef, gameStage]);
 
+  useEffect(() => {
+    const highScore = getFromLocalStorage(LocalStorage.highScore);
+
+    if(gameStage === GameStage.gameOver && Number(highScore) < Number(score)){
+      setToLocalStorage(LocalStorage.highScore, String(score))
+    }
+  }, [gameStage, score])
+
+
   const getRandomOffscreenPosition = (screenWidthOrHeight: number) => {
     return Math.random() > 0.5
       ? `${Math.random() * 2000 + screenWidthOrHeight}px`
@@ -247,6 +258,7 @@ const OpenGameScreen = ({
           onGameEnd={(score: number) => setScore(score)}
         />
       </CounterWrapper>
+      <HighScore />
     </GameContainer>
   );
 };
