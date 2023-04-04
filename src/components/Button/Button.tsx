@@ -102,7 +102,7 @@ interface ButtonProps {
   variant?: ButtonVariant;
 }
 
-export const Button = ({
+const Button = ({
   children,
   onClick,
   type = "button",
@@ -122,3 +122,5 @@ export const Button = ({
     </ButtonWrapper>
   );
 };
+
+export default Button;

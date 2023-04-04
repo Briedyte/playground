@@ -11,8 +11,8 @@ import BalloonImg from "images/balloonGame/balloon.png";
 
 import useWindowDimensions from "hooks/useWindowDimensons";
 import { GameStage } from "components/BalloonGame/BaloonGame";
-import { Button } from "components/Button/Button";
 import { Clouds, PointsCounter, Paragraph } from "components/BalloonGame/index";
+import Button from "components/Button";
 
 interface OpenGameScreenProps {
   onClose: () => void;
