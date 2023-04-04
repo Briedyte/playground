@@ -3,5 +3,13 @@ import IdleGameScreen from "components/BalloonGame/Components/IdleGameScreen";
 import OpenGameScreen from "components/BalloonGame/Components/OpenGameScreen";
 import PointsCounter from "components/BalloonGame/Components/PointsCounter";
 import Paragraph from "./Components/Paragraph";
+import HighScore from "./Components/HighScore";
 
-export { Clouds, IdleGameScreen, OpenGameScreen, PointsCounter, Paragraph };
+export {
+  Clouds,
+  IdleGameScreen,
+  OpenGameScreen,
+  PointsCounter,
+  Paragraph,
+  HighScore,
+};

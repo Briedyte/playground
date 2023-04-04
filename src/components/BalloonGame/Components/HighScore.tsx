@@ -1,36 +1,79 @@
-
 import { useEffect, useState } from "react";
-import { deleteFromLocalStorage, LocalStorage, localStorageEventEmitter } from "utils/localStorage";
-import BinImg from 'images/bin.png';
+import {
+  deleteFromLocalStorage,
+  LocalStorage,
+  localStorageEventEmitter,
+} from "utils/localStorage";
+import { Spacing } from "config/style";
+
+import BinImg from "images/bin.svg";
 import IconButton from "components/buttons/IconButton";
+
 import styled from "styled-components";
 
+import { Paragraph } from "components/BalloonGame/index";
+import PopUp from "components/PopUp";
+
 const Container = styled.div`
-    display: flex;
-    align-items: center;
-`
+  display: flex;
+  align-items: center;
+  column-gap: ${Spacing[14]};
+`;
 
-const Text = styled.p`
-    dislay: block;
-`
-
-const HighScore = () => {
-    const [highScore, setHighScore] = useState<string | null>(localStorage.getItem(LocalStorage.highScore));
-
-    useEffect(() => {
-        const listener = () => {
-            setHighScore(localStorage.getItem(LocalStorage.highScore));
-        };
-    
-        localStorageEventEmitter.addListener("change", listener);
-    
-        return () => {
-          localStorageEventEmitter.removeListener("change", listener);
-        };
-      }, []);
-
-    return highScore ? (<Container><p>High score: {highScore}</p>
-    <IconButton iconSrc={BinImg} onClick={() => deleteFromLocalStorage(LocalStorage.highScore)} />
-    </Container>) : null;
+export enum HightScoreVariant {
+  Small = "Small",
+  Large = "Large",
 }
+
+const HighScore = ({ variant = HightScoreVariant.Small }) => {
+  const [highScore, setHighScore] = useState(
+    Number(localStorage.getItem(LocalStorage.highScore)) || 0
+  );
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const scoreText = `High score: ${highScore || 0}`;
+  console.log("NU", highScore);
+
+  useEffect(() => {
+    const listener = () => {
+      console.log("FIRED", localStorage.getItem(LocalStorage.highScore));
+      setHighScore(Number(localStorage.getItem(LocalStorage.highScore)));
+    };
+    localStorageEventEmitter.addListener("change", listener);
+
+    return () => {
+      localStorageEventEmitter.removeListener("change", listener);
+    };
+  }, []);
+
+  return (
+    <>
+      <Container>
+        {variant === HightScoreVariant.Large ? (
+          <Paragraph text={scoreText} />
+        ) : (
+          <p>{scoreText}</p>
+        )}
+
+        {!!highScore && (
+          <IconButton
+            iconSrc={BinImg}
+            onClick={() => setIsPopupVisible(true)}
+          />
+        )}
+      </Container>
+      {isPopupVisible && (
+        <PopUp
+          onClose={() => setIsPopupVisible(false)}
+          onButtonClick={() => {
+            deleteFromLocalStorage(LocalStorage.highScore);
+            setIsPopupVisible(false);
+          }}
+        >
+          <p>Are you sure you want to delete yout high score?</p>
+        </PopUp>
+      )}
+    </>
+  );
+};
 export default HighScore;

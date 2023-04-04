@@ -7,14 +7,26 @@ import {
   Spacing,
   zIndex,
 } from "config/style";
+
 import BalloonImg from "images/balloonGame/balloon.png";
 
 import useWindowDimensions from "hooks/useWindowDimensons";
+import { HightScoreVariant } from "components/BalloonGame/Components/HighScore";
 import { GameStage } from "components/BalloonGame/BaloonGame";
-import { Clouds, PointsCounter, Paragraph } from "components/BalloonGame/index";
+
+import {
+  Clouds,
+  PointsCounter,
+  Paragraph,
+  HighScore,
+} from "components/BalloonGame/index";
 import Button from "components/buttons";
-import HighScore from "./HighScore";
-import { getFromLocalStorage, LocalStorage, setToLocalStorage } from "utils/localStorage";
+
+import {
+  getFromLocalStorage,
+  LocalStorage,
+  setToLocalStorage,
+} from "utils/localStorage";
 
 interface OpenGameScreenProps {
   onClose: () => void;
@@ -127,7 +139,7 @@ const CenteredContainer = styled.div`
   }
 `;
 
-const CounterWrapper = styled.div`
+const PointsWrapper = styled.div`
   @keyframes appearFromBottom {
     0% {
       opacity: 0;
@@ -163,6 +175,7 @@ const OpenGameScreen = ({
     defaultBalloonPosition
   );
   const [score, setScore] = useState<null | number>(null);
+
   const balloonRef = useRef<HTMLImageElement>(null);
   const windowDimensions = useWindowDimensions();
 
@@ -188,13 +201,14 @@ const OpenGameScreen = ({
   }, [balloonRef, gameStage]);
 
   useEffect(() => {
-    const highScore = getFromLocalStorage(LocalStorage.highScore);
+    const highScore = getFromLocalStorage(LocalStorage.highScore) || "0";
+    console.log("SCORE", score);
+    console.log("HIGH", highScore);
 
-    if(gameStage === GameStage.gameOver && Number(highScore) < Number(score)){
-      setToLocalStorage(LocalStorage.highScore, String(score))
+    if (score && Number(highScore) < Number(score)) {
+      setToLocalStorage(LocalStorage.highScore, String(score));
     }
-  }, [gameStage, score])
-
+  }, [score]);
 
   const getRandomOffscreenPosition = (screenWidthOrHeight: number) => {
     return Math.random() > 0.5
@@ -219,11 +233,13 @@ const OpenGameScreen = ({
       {gameStage === GameStage.gameOver && (
         <CenteredContainer>
           <Paragraph text={`Aaaand it's gone! You scored ${score} points!`} />
+          <HighScore variant={HightScoreVariant.Large} />
           <Button
             onClick={() => {
               balloonObserver.disconnect();
               setBalloonPosition(defaultBalloonPosition);
               setGameStage(GameStage.ready);
+              setScore(null);
             }}
           >
             Try again
@@ -251,14 +267,14 @@ const OpenGameScreen = ({
           src={BalloonImg}
         />
       </BallononWrapper>
-      <CounterWrapper>
+      <PointsWrapper>
+        <HighScore />
         <PointsCounter
           isActive={gameStage === GameStage.started}
           reset={gameStage === GameStage.ready}
           onGameEnd={(score: number) => setScore(score)}
         />
-      </CounterWrapper>
-      <HighScore />
+      </PointsWrapper>
     </GameContainer>
   );
 };

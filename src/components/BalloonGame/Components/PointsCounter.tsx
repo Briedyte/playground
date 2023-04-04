@@ -27,22 +27,21 @@ const Container = styled.div`
 const PointsCounter = ({ isActive, reset, onGameEnd }: TimerProps) => {
   const [points, setPoints] = useState(0);
 
-
   useEffect(() => {
     let interval: NodeJS.Timer;
 
     if (isActive) {
-      interval = setInterval(() => setPoints((prev) => prev + 1), 100);
+      interval = setInterval(() => setPoints((prev) => prev + 1), 300);
     }
 
     if (reset) {
       setPoints(0);
     }
 
-    if (!isActive && points !== 0) {
+    if (!isActive && points !== 0 && !reset) {
       onGameEnd(points);
     }
-    
+
     return () => {
       clearInterval(interval);
     };
