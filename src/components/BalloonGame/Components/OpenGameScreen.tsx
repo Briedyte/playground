@@ -19,14 +19,13 @@ import {
   Paragraph,
   HighScore,
 } from "components/BalloonGame/index";
-import Button from "components/buttons";
+import { Button, IconButton } from "components/buttons/index";
 
 import {
   getFromLocalStorage,
   LocalStorage,
   setToLocalStorage,
 } from "utils/localStorage";
-import IconButton from "components/buttons/IconButton";
 
 interface OpenGameScreenProps {
   onClose: () => void;
