@@ -143,20 +143,16 @@ const PointsWrapper = styled.div`
   @keyframes appearFromBottom {
     0% {
       opacity: 0;
-      transform: translateY(60px) translateX(60px);
-    }
-    90% {
-      opacity: 0;
-      transform: translateY(60px) translateX(60px);
+      bottom: -100%;
+      right: -100%;
     }
     100% {
       opacity: 1;
-      transform: translateY(0px);
+      bottom: 20px;
+      right: 20px;
     }
   }
   position: fixed;
-  bottom: 20px;
-  right: 20px;
   animation: appearFromBottom 2s forwards linear;
   z-index: ${zIndex.aboveClouds};
 `;
@@ -179,18 +175,13 @@ const OpenGameScreen = ({
   const balloonRef = useRef<HTMLImageElement>(null);
   const windowDimensions = useWindowDimensions();
 
-  const balloonObserver = new IntersectionObserver(
-    (entries) => {
-      const balloon = entries[0];
+  const balloonObserver = new IntersectionObserver((entries) => {
+    const balloon = entries[0];
 
-      if (!balloon.isIntersecting) {
-        setGameStage(GameStage.gameOver);
-      }
-    },
-    {
-      threshold: 0.1,
+    if (!balloon.isIntersecting) {
+      setGameStage(GameStage.gameOver);
     }
-  );
+  });
 
   useEffect(() => {
     if (balloonRef.current && gameStage === GameStage.started) {
@@ -200,20 +191,19 @@ const OpenGameScreen = ({
     return () => balloonObserver.disconnect();
   }, [balloonRef, gameStage]);
 
-  useEffect(() => {
-    const highScore = getFromLocalStorage(LocalStorage.highScore) || "0";
-    console.log("SCORE", score);
-    console.log("HIGH", highScore);
-
-    if (score && Number(highScore) < Number(score)) {
-      setToLocalStorage(LocalStorage.highScore, String(score));
-    }
-  }, [score]);
-
   const getRandomOffscreenPosition = (screenWidthOrHeight: number) => {
     return Math.random() > 0.5
       ? `${Math.random() * 2000 + screenWidthOrHeight}px`
       : `${-(Math.random() * 2000) - screenWidthOrHeight}px`;
+  };
+
+  const onGameOver = (gameScore: number) => {
+    const highScore = Number(getFromLocalStorage(LocalStorage.highScore)) || 0;
+    setScore(gameScore);
+
+    if (highScore < gameScore) {
+      setToLocalStorage(LocalStorage.highScore, String(gameScore));
+    }
   };
 
   return (
@@ -270,9 +260,8 @@ const OpenGameScreen = ({
       <PointsWrapper>
         <HighScore />
         <PointsCounter
-          isActive={gameStage === GameStage.started}
-          reset={gameStage === GameStage.ready}
-          onGameEnd={(score: number) => setScore(score)}
+          gameStage={gameStage}
+          onGameEnd={(gameScore: number) => onGameOver(gameScore)}
         />
       </PointsWrapper>
     </GameContainer>

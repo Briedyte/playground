@@ -11,11 +11,13 @@ const Icon = styled.img`
   width: 35px;
   padding: 4px;
   border-radius: 5px;
-  border: 2px solid black;
+  border-style: dotted;
+  border-width: 2px;
+  border-color: ${ColorPalette.black};
   cursor: pointer;
 
   :hover {
-    background: ${ColorPalette.tertiary};
+    border-style: dashed;
   }
 `;
 

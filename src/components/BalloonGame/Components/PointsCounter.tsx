@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { ColorPalette, FontFamily, FontSize, Spacing } from "config/style";
+import { GameStage } from "components/BalloonGame/BaloonGame";
 
 interface TimerProps {
-  isActive: boolean;
-  reset: boolean;
   onGameEnd: (points: number) => void;
+  gameStage: GameStage;
 }
 
 export const defaultTime = { minutes: 0, seconds: 0 };
@@ -24,28 +24,28 @@ const Container = styled.div`
   background: ${ColorPalette.whiteTransparent};
 `;
 
-const PointsCounter = ({ isActive, reset, onGameEnd }: TimerProps) => {
+const PointsCounter = ({ gameStage, onGameEnd }: TimerProps) => {
   const [points, setPoints] = useState(0);
 
   useEffect(() => {
     let interval: NodeJS.Timer;
 
-    if (isActive) {
+    if (gameStage === GameStage.started) {
       interval = setInterval(() => setPoints((prev) => prev + 1), 300);
     }
 
-    if (reset) {
+    if (gameStage === GameStage.ready) {
       setPoints(0);
     }
 
-    if (!isActive && points !== 0 && !reset) {
+    if (gameStage === GameStage.gameOver) {
       onGameEnd(points);
     }
 
     return () => {
       clearInterval(interval);
     };
-  }, [isActive, reset]);
+  }, [gameStage]);
 
   return <Container>{points}</Container>;
 };

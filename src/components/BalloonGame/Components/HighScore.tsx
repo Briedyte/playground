@@ -32,11 +32,9 @@ const HighScore = ({ variant = HightScoreVariant.Small }) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const scoreText = `High score: ${highScore || 0}`;
-  console.log("NU", highScore);
 
   useEffect(() => {
     const listener = () => {
-      console.log("FIRED", localStorage.getItem(LocalStorage.highScore));
       setHighScore(Number(localStorage.getItem(LocalStorage.highScore)));
     };
     localStorageEventEmitter.addListener("change", listener);
