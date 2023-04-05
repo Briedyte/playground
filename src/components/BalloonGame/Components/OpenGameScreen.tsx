@@ -11,7 +11,6 @@ import {
 import BalloonImg from "images/balloonGame/balloon.png";
 import CloseImg from "images/close.png";
 
-import useWindowDimensions from "hooks/useWindowDimensons";
 import { GameStage } from "components/BalloonGame/BaloonGame";
 
 import {
@@ -62,38 +61,36 @@ const CloseButtonWrapper = styled.div`
 
 const BallononWrapper = styled.div<{
   position: { x: string; y: string };
-  gameStarted: boolean;
+  isGameInitiated: boolean;
 }>`
   @keyframes flyFromBottom {
     0% {
       opacity: 0;
-      bottom: 0;
+      transform: translateX(-50%) translateY(500px);
     }
     40% {
       opacity: 0;
-      bottom: 0;
     }
     100% {
       opacity: 1;
-      bottom: 20%;
+      transform: translateX(-50%) translateY(0);
     }
   }
 
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%) translateY(0);
   animation: flyFromBottom 1.5s forwards linear;
   transition: transform 16s linear;
 
-  ${({ position, gameStarted }) => `
-    transform: translateX(${position.x}) translateY(${position.y});
-  z-index: ${gameStarted ? zIndex.negative : zIndex.positive};
-    transition: ${gameStarted ? "transform 16s linear" : "none"};
+  ${({ position, isGameInitiated }) => `
+    top ${position.y};
+    left: ${position.x};
+    z-index: ${isGameInitiated ? zIndex.negative : zIndex.aboveClouds};
+    transition: ${isGameInitiated ? "all 13s linear" : "none"};
   `}
 `;
 
 const Balloon = styled.img<{
-  gameStarted: boolean;
+  isGameInitiated: boolean;
 }>`
   @keyframes rotate {
     0% {
@@ -111,9 +108,9 @@ const Balloon = styled.img<{
   }
   ${balloonBaseStyle};
 
-  ${({ gameStarted }) => `
-  animation: ${gameStarted ? "rotate 5s linear forwards infinite" : "none"};
-  transform: ${!gameStarted && "rotate(0)"}
+  ${({ isGameInitiated }) => `
+  animation: ${isGameInitiated ? "rotate 5s linear forwards infinite" : "none"};
+  transform: ${!isGameInitiated && "rotate(0)"}
   transition: transform 16s linear;
 `}
 `;
@@ -124,7 +121,7 @@ const CenteredContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  z-index: ${zIndex.positive};
+  z-index: ${zIndex.aboveClouds};
   background: ${ColorPalette.whiteTransparent};
   padding: 60px 10px;
   border: 2px solid ${ColorPalette.black};
@@ -149,12 +146,12 @@ const PointsWrapper = styled.div`
   }
   position: fixed;
   animation: appearFromBottom 2s forwards linear;
-  z-index: ${zIndex.positive};
+  z-index: ${zIndex.aboveClouds};
 `;
 
 const defaultBalloonPosition = {
-  x: "-50%",
-  y: "0",
+  x: "50%",
+  y: "70%",
 };
 
 const OpenGameScreen = ({
@@ -168,7 +165,6 @@ const OpenGameScreen = ({
   const [score, setScore] = useState<null | number>(null);
 
   const balloonRef = useRef<HTMLImageElement>(null);
-  const windowDimensions = useWindowDimensions();
 
   const balloonObserver = new IntersectionObserver((entries) => {
     const balloon = entries[0];
@@ -186,10 +182,10 @@ const OpenGameScreen = ({
     return () => balloonObserver.disconnect();
   }, [balloonRef, gameStage]);
 
-  const getRandomOffscreenPosition = (screenWidthOrHeight: number) => {
+  const getRandomPosition = () => {
     return Math.random() > 0.5
-      ? `${Math.random() * 2000 + screenWidthOrHeight}px`
-      : `${-(Math.random() * 2000) - screenWidthOrHeight}px`;
+      ? `${Math.random() * 100 + 100}%`
+      : `${-(Math.random() * 100) - 100}%`;
   };
 
   const onGameOver = (gameScore: number) => {
@@ -201,12 +197,29 @@ const OpenGameScreen = ({
     }
   };
 
+  const pauseGame = () => {
+    setGameStage(GameStage.paused);
+    setBalloonPosition({
+      x: String(balloonRef.current?.offsetLeft || defaultBalloonPosition.x),
+      y: String(balloonRef.current?.offsetTop || defaultBalloonPosition.y),
+    });
+  };
+
+  const resumePausedGame = () => {
+    {
+      setGameStage(GameStage.started);
+      setBalloonPosition({
+        x: getRandomPosition(),
+        y: getRandomPosition(),
+      });
+    }
+  };
+
   return (
     <GameContainer>
       <CloseButtonWrapper>
         <IconButton iconSrc={CloseImg} onClick={() => onClose()} />
       </CloseButtonWrapper>
-      <Clouds countOfClouds={5} />
 
       {gameStage === GameStage.ready && (
         <CenteredContainer>
@@ -228,13 +241,16 @@ const OpenGameScreen = ({
           </Button>
         </CenteredContainer>
       )}
+      <Clouds countOfClouds={5} />
       <BallononWrapper
-        gameStarted={gameStage === GameStage.started}
+        isGameInitiated={
+          gameStage === GameStage.started || gameStage === GameStage.paused
+        }
         position={{ x: balloonPosition.x, y: balloonPosition.y }}
         onClick={() => {
           setBalloonPosition({
-            x: getRandomOffscreenPosition(windowDimensions.width),
-            y: getRandomOffscreenPosition(windowDimensions.height),
+            x: getRandomPosition(),
+            y: getRandomPosition(),
           });
 
           if (gameStage !== GameStage.started) {
@@ -244,12 +260,21 @@ const OpenGameScreen = ({
         ref={balloonRef}
       >
         <Balloon
-          gameStarted={gameStage === GameStage.started}
+          isGameInitiated={
+            gameStage === GameStage.started || gameStage === GameStage.paused
+          }
           src={BalloonImg}
         />
       </BallononWrapper>
       <PointsWrapper>
-        <HighScore />
+        <HighScore
+          onBinIconClick={() => {
+            if (gameStage === GameStage.started) pauseGame();
+          }}
+          onPopUpClose={() => {
+            if (gameStage === GameStage.paused) resumePausedGame();
+          }}
+        />
         <PointsCounter
           gameStage={gameStage}
           onGameEnd={(gameScore: number) => onGameOver(gameScore)}

@@ -8,6 +8,7 @@ export enum GameStage {
   ready = "ready",
   started = "started",
   gameOver = "gameOver",
+  paused = "paused",
 }
 
 const GameWrapper = styled.div`

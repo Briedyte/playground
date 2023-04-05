@@ -10,6 +10,7 @@ interface PopUpProps {
   onClose: () => void;
   onButtonClick: () => void;
   buttonText: string;
+  isVisible: boolean;
 }
 
 const BackDrop = styled.div`
@@ -46,7 +47,11 @@ const PopUp = ({
   onClose,
   onButtonClick,
   buttonText,
+  isVisible,
 }: PopUpProps) => {
+  if (!isVisible) {
+    return null;
+  }
   const modalRef = useRef(null);
 
   const keyPress = (e: KeyboardEvent) => {

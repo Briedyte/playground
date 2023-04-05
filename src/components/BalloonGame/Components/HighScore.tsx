@@ -13,6 +13,11 @@ import styled from "styled-components";
 
 import PopUp from "components/PopUp";
 
+interface HighScoreProps {
+  onBinIconClick: () => void;
+  onPopUpClose: () => void;
+}
+
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -24,7 +29,7 @@ export enum HightScoreVariant {
   Large = "Large",
 }
 
-const HighScore = () => {
+const HighScore = ({ onBinIconClick, onPopUpClose }: HighScoreProps) => {
   const [highScore, setHighScore] = useState(
     Number(localStorage.getItem(LocalStorage.highScore)) || 0
   );
@@ -51,21 +56,29 @@ const HighScore = () => {
     <>
       <Container>
         <p>{scoreText}</p>
-        <IconButton iconSrc={BinImg} onClick={() => setIsPopupVisible(true)} />
-      </Container>
-
-      {isPopupVisible && (
-        <PopUp
-          onClose={() => setIsPopupVisible(false)}
-          onButtonClick={() => {
-            deleteFromLocalStorage(LocalStorage.highScore);
-            setIsPopupVisible(false);
+        <IconButton
+          iconSrc={BinImg}
+          onClick={() => {
+            setIsPopupVisible(true);
+            onBinIconClick();
           }}
-          buttonText="Yes"
-        >
-          <p>Are you sure you want to delete your high score?</p>
-        </PopUp>
-      )}
+        />
+      </Container>
+      <PopUp
+        onClose={() => {
+          setIsPopupVisible(false);
+          onPopUpClose();
+        }}
+        onButtonClick={() => {
+          deleteFromLocalStorage(LocalStorage.highScore);
+          setIsPopupVisible(false);
+          onPopUpClose();
+        }}
+        buttonText="Yes"
+        isVisible={isPopupVisible}
+      >
+        <p>Are you sure you want to delete your high score?</p>
+      </PopUp>
     </>
   );
 };
