@@ -9,9 +9,9 @@ import {
 } from "config/style";
 
 import BalloonImg from "images/balloonGame/balloon.png";
+import CloseImg from "images/close.png";
 
 import useWindowDimensions from "hooks/useWindowDimensons";
-import { HightScoreVariant } from "components/BalloonGame/Components/HighScore";
 import { GameStage } from "components/BalloonGame/BaloonGame";
 
 import {
@@ -27,6 +27,7 @@ import {
   LocalStorage,
   setToLocalStorage,
 } from "utils/localStorage";
+import IconButton from "components/buttons/IconButton";
 
 interface OpenGameScreenProps {
   onClose: () => void;
@@ -54,14 +55,8 @@ const GameContainer = styled.section`
   animation: backgroundAppear 1s ease-in forwards;
 `;
 
-const CloseButton = styled.button`
-  border: 0;
-  background: ${ColorPalette.tertiary};
-  cursor: pointer;
-  height: 40px;
-  width: 40px;
-  margin-right: ${Spacing[12]};
-  margin-left: auto;
+const CloseButtonWrapper = styled.div`
+  margin: ${Spacing[4]} ${Spacing[12]} 0 auto;
   z-index: ${zIndex.aboveClouds};
 `;
 
@@ -92,7 +87,7 @@ const BallononWrapper = styled.div<{
 
   ${({ position, gameStarted }) => `
     transform: translateX(${position.x}) translateY(${position.y});
-    z-index: ${gameStarted ? zIndex.negative : zIndex.aboveClouds};
+  z-index: ${gameStarted ? zIndex.negative : zIndex.positive};
     transition: ${gameStarted ? "transform 16s linear" : "none"};
   `}
 `;
@@ -129,7 +124,7 @@ const CenteredContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  z-index: ${zIndex.aboveClouds};
+  z-index: ${zIndex.positive};
   background: ${ColorPalette.whiteTransparent};
   padding: 60px 10px;
   border: 2px solid ${ColorPalette.black};
@@ -154,7 +149,7 @@ const PointsWrapper = styled.div`
   }
   position: fixed;
   animation: appearFromBottom 2s forwards linear;
-  z-index: ${zIndex.aboveClouds};
+  z-index: ${zIndex.positive};
 `;
 
 const defaultBalloonPosition = {
@@ -208,13 +203,11 @@ const OpenGameScreen = ({
 
   return (
     <GameContainer>
-      <CloseButton
-        onClick={() => {
-          onClose();
-        }}
-      >
-        &#x274c;
-      </CloseButton>
+      <CloseButtonWrapper>
+        <IconButton iconSrc={CloseImg} onClick={() => onClose()} />
+      </CloseButtonWrapper>
+      <Clouds countOfClouds={5} />
+
       {gameStage === GameStage.ready && (
         <CenteredContainer>
           <Paragraph text="Click on the balloon to bounce it and try not to loose it offscreen!" />
@@ -223,7 +216,6 @@ const OpenGameScreen = ({
       {gameStage === GameStage.gameOver && (
         <CenteredContainer>
           <Paragraph text={`Aaaand it's gone! You scored ${score} points!`} />
-          <HighScore variant={HightScoreVariant.Large} />
           <Button
             onClick={() => {
               balloonObserver.disconnect();
@@ -236,7 +228,6 @@ const OpenGameScreen = ({
           </Button>
         </CenteredContainer>
       )}
-      <Clouds countOfClouds={5} />
       <BallononWrapper
         gameStarted={gameStage === GameStage.started}
         position={{ x: balloonPosition.x, y: balloonPosition.y }}

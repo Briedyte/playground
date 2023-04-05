@@ -11,7 +11,6 @@ import IconButton from "components/buttons/IconButton";
 
 import styled from "styled-components";
 
-import { Paragraph } from "components/BalloonGame/index";
 import PopUp from "components/PopUp";
 
 const Container = styled.div`
@@ -25,7 +24,7 @@ export enum HightScoreVariant {
   Large = "Large",
 }
 
-const HighScore = ({ variant = HightScoreVariant.Small }) => {
+const HighScore = () => {
   const [highScore, setHighScore] = useState(
     Number(localStorage.getItem(LocalStorage.highScore)) || 0
   );
@@ -44,22 +43,17 @@ const HighScore = ({ variant = HightScoreVariant.Small }) => {
     };
   }, []);
 
+  if (!highScore) {
+    return null;
+  }
+
   return (
     <>
       <Container>
-        {variant === HightScoreVariant.Large ? (
-          <Paragraph text={scoreText} />
-        ) : (
-          <p>{scoreText}</p>
-        )}
-
-        {!!highScore && (
-          <IconButton
-            iconSrc={BinImg}
-            onClick={() => setIsPopupVisible(true)}
-          />
-        )}
+        <p>{scoreText}</p>
+        <IconButton iconSrc={BinImg} onClick={() => setIsPopupVisible(true)} />
       </Container>
+
       {isPopupVisible && (
         <PopUp
           onClose={() => setIsPopupVisible(false)}
@@ -67,8 +61,9 @@ const HighScore = ({ variant = HightScoreVariant.Small }) => {
             deleteFromLocalStorage(LocalStorage.highScore);
             setIsPopupVisible(false);
           }}
+          buttonText="Yes"
         >
-          <p>Are you sure you want to delete yout high score?</p>
+          <p>Are you sure you want to delete your high score?</p>
         </PopUp>
       )}
     </>

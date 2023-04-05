@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import { ColorPalette, FontFamily, FontSize, Spacing } from "config/style";
+import {
+  ColorPalette,
+  FontFamily,
+  FontSize,
+  Spacing,
+} from "config/style";
 import { GameStage } from "components/BalloonGame/BaloonGame";
 
 interface TimerProps {
