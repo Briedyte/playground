@@ -84,7 +84,9 @@ const BallononWrapper = styled.div<{
     top ${position.y};
     left: ${position.x};
     z-index: ${isGameInitiated ? zIndex.negative : zIndex.aboveClouds};
-    transition: ${isGameInitiated ? "all 13s linear" : "none"};
+    transition: ${
+      isGameInitiated ? "all 13s linear,  z-index 0s linear" : "none"
+    };
   `}
 `;
 
