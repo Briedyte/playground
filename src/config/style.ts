@@ -11,7 +11,9 @@ export const ColorPalette = {
   tertiary: "#ffc422",
   balloonGameBackground: "#e8faff",
   black: "#282828",
+  blackTransparent: "#000000e0",
   whiteTransparent: "#ffffffc3",
+  white: "#ffffff",
 } as const;
 
 export const zIndex = {
@@ -19,6 +21,7 @@ export const zIndex = {
   positive: 1,
   clouds: 1,
   aboveClouds: 2,
+  popUp: 4,
 } as const;
 
 export const baseFontSize = "16px";
